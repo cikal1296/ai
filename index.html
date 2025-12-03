@@ -3,185 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <title>AI Chat — PT Assistant</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-      background: #ffffff;
-      color: #000;
-    }
-
-    /* Sidebar */
-    #sidebar {
-      width: 260px;
-      background: #111;
-      color: #fff;
-      border-right: 1px solid #333;
-      display: flex;
-      flex-direction: column;
-      padding: 15px;
-    }
-
-    #logo {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #fff;
-    }
-
-    #newChatBtn {
-      background: #fff;
-      color: #000;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    #search {
-      width: 100%;
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #666;
-      margin-bottom: 15px;
-      background: #222;
-      color: #fff;
-    }
-
-    #history {
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    .history-item {
-      padding: 8px;
-      background: #222;
-      color: #fff;
-      border-radius: 5px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      border: 1px solid #444;
-    }
-
-    /* Chat area */
-    #main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      background: #fff;
-    }
-
-    #title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #000;
-    }
-
-    #chat {
-      border: 1px solid #ccc;
-      padding: 15px;
-      height: 70vh;
-      overflow-y: auto;
-      border-radius: 8px;
-      background: #fafafa;
-      position: relative;
-    }
-
-    .msg {
-      margin-bottom: 14px;
-      max-width: 70%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      line-height: 1.4;
-      white-space: pre-wrap;
-    }
-
-    /* AI kiri */
-    .ai {
-      background: #eee;
-      color: #000;
-      text-align: left;
-    }
-
-    /* User kanan */
-    .you {
-      background: #000;
-      color: #fff;
-      margin-left: auto;
-      text-align: right;
-    }
-
-    /* Input section */
-    #inputArea {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-    }
-
-    #input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #aaa;
-    }
-
-    #sendBtn {
-      padding: 10px 15px;
-      background: #000;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    #uploadBtn {
-      padding: 10px 15px;
-      background: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #fileUpload {
-      display: none;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="flex h-screen bg-white text-black">
 
-  <!-- SIDEBAR -->
-  <div id="sidebar">
-    <div id="logo">PT Company AI</div>
+  <!-- SIDEBAR (hanya tampil di desktop) -->
+  <div id="sidebar" class="hidden md:flex flex-col w-64 bg-gray-900 text-white border-r border-gray-800 p-4">
+    <div id="logo" class="text-lg font-bold mb-5">PT Company AI</div>
 
-    <button id="newChatBtn" onclick="newChat()">+ Obrolan Baru</button>
+    <button id="newChatBtn" onclick="newChat()"
+            class="bg-white text-black w-full py-2 rounded-md font-bold mb-2">
+      + Obrolan Baru
+    </button>
 
-    <input id="search" type="text" placeholder="Cari obrolan..." oninput="searchHistory()"/>
+    <input id="search" type="text" placeholder="Cari obrolan..."
+           oninput="searchHistory()"
+           class="w-full p-2 rounded-md border border-gray-600 mb-4 bg-gray-800 text-white"/>
 
-    <div id="history"></div>
+    <div id="history" class="flex-1 overflow-y-auto"></div>
   </div>
 
   <!-- MAIN -->
-  <div id="main">
-    <div id="title">AI Chat by Cikal</div>
+  <div id="main" class="flex-1 flex flex-col p-5">
+    <div id="title" class="text-2xl font-bold mb-4">AI Chat by Cikal</div>
 
-    <div id="chat"></div>
+    <div id="chat" class="flex-1 border border-gray-300 rounded-lg p-4 overflow-y-auto bg-gray-50"></div>
 
-    <div id="inputArea">
-      <input id="input" type="text" placeholder="Tulis pesan..." />
-      <button id="uploadBtn" onclick="document.getElementById('fileUpload').click()">📁 Foto</button>
-      <input id="fileUpload" type="file" accept="image/*" onchange="handleImage(event)">
-      <button id="sendBtn" onclick="send()">Send</button>
+    <div id="inputArea" class="flex gap-2 mt-2">
+      <input id="input" type="text" placeholder="Tulis pesan..."
+             class="flex-1 p-2 border border-gray-400 rounded-md" />
+
+      <button id="uploadBtn" onclick="document.getElementById('fileUpload').click()"
+              class="px-4 py-2 bg-gray-600 text-white rounded-md hidden md:inline-block">
+        📁 Foto
+      </button>
+      <input id="fileUpload" type="file" accept="image/*" onchange="handleImage(event)" class="hidden">
+
+      <button id="sendBtn" onclick="send()"
+              class="px-4 py-2 bg-black text-white rounded-md font-bold">
+        Send
+      </button>
     </div>
   </div>
 
@@ -201,7 +63,7 @@
     box.innerHTML = "";
     history.forEach((item, i) => {
       const div = document.createElement("div");
-      div.className = "history-item";
+      div.className = "p-2 bg-gray-800 text-white rounded-md mb-2 cursor-pointer border border-gray-700";
       div.innerText = item.title;
       div.onclick = () => loadChat(i);
       box.appendChild(div);
@@ -230,15 +92,13 @@
 
   function searchHistory() {
     const q = document.getElementById("search").value.toLowerCase();
-
     const box = document.getElementById("history");
     box.innerHTML = "";
-
     history
       .filter(h => h.title.toLowerCase().includes(q))
       .forEach((h, i) => {
         const div = document.createElement("div");
-        div.className = "history-item";
+        div.className = "p-2 bg-gray-800 text-white rounded-md mb-2 cursor-pointer border border-gray-700";
         div.innerText = h.title;
         div.onclick = () => loadChat(i);
         box.appendChild(div);
@@ -246,14 +106,12 @@
   }
 
   function formatMarkdown(text) {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
   }
 
   async function send() {
     const text = document.getElementById("input").value.trim();
     if (!text && !pendingImage) return;
-
     document.getElementById("input").value = "";
 
     if (text) {
@@ -265,11 +123,8 @@
     if (pendingImage) {
       const img = document.createElement("img");
       img.src = pendingImage;
-      img.style.maxWidth = "200px";
-      img.style.marginBottom = "10px";
-      img.style.borderRadius = "8px";
+      img.className = "max-w-xs mb-2 rounded-md";
       document.getElementById("chat").appendChild(img);
-
       imageToSend = pendingImage;
       pendingImage = null;
     }
@@ -284,14 +139,15 @@
     });
 
     const data = await res.json();
-
     addMessage(data.reply, "ai");
     currentChat.push({ text: data.reply, cls: "ai" });
   }
 
   function addMessage(msg, cls) {
     const div = document.createElement("div");
-    div.className = "msg " + cls;
+    div.className = "msg " + cls + " mb-3 p-3 rounded-lg max-w-[70%] whitespace-pre-wrap";
+    if(cls === "ai") div.className += " bg-gray-200 text-black text-left";
+    if(cls === "you") div.className += " bg-black text-white text-right ml-auto";
     div.innerHTML = formatMarkdown(msg);
     document.getElementById("chat").appendChild(div);
   }
@@ -299,23 +155,16 @@
   function handleImage(event) {
     const file = event.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (e) => {
       pendingImage = e.target.result;
-
       addMessage("Foto siap dikirim.", "you");
 
       const img = document.createElement("img");
       img.src = pendingImage;
-      img.style.maxWidth = "200px";
-      img.style.opacity = "0.6";
-      img.style.marginBottom = "10px";
-      img.style.borderRadius = "8px";
-
+      img.className = "max-w-xs opacity-60 mb-2 rounded-md";
       document.getElementById("chat").appendChild(img);
     };
-
     reader.readAsDataURL(file);
   }
 </script>
